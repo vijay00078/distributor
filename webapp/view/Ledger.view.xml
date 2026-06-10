@@ -1,0 +1,61 @@
+<mvc:View controllerName="distributor.controller.Ledger"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns="sap.m">
+    <Page showHeader="false" backgroundDesign="Transparent" class="bg-transparent">
+        <html:div class="pt-2 animate-fade-in">
+          <!-- Back header -->
+          <html:div class="flex items-center gap-3 mb-4">
+            <html:button press=".onNavBack" class="p-1.5 rounded-full hover:bg-slate-200 text-slate-700 transition-colors" onclick="window.ledgerApp.onNavBack()">
+              <html:svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <html:path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </html:svg>
+            </html:button>
+            <html:h2 class="text-lg font-bold text-slate-900">Customer Ledger</html:h2>
+          </html:div>
+
+          <!-- Outstanding Banner Graphic -->
+          <html:div class="relative bg-gradient-to-r from-[#eef7ec] to-[#e4f3de] rounded-2xl p-4 mb-5 border border-emerald-100 shadow-sm flex items-center gap-4 overflow-hidden">
+            <html:div class="absolute -right-6 -bottom-6 opacity-10">
+              <html:svg class="w-32 h-32 text-emerald-700" fill="currentColor" viewBox="0 0 24 24">
+                <html:path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+              </html:svg>
+            </html:div>
+            
+            <!-- Custom Money Bag Illustration -->
+            <html:div class="w-16 h-16 shrink-0 relative flex items-center justify-center">
+              <html:svg class="w-full h-full text-emerald-600" fill="currentColor" viewBox="0 0 64 64">
+                <html:path d="M32 6C24.3 6 18 12.3 18 20c0 4.1 1.8 7.8 4.7 10.4C14.7 34.6 10 42.7 10 52c0 3.3 2.7 6 6 6h32c3.3 0 6-2.7 6-6 0-9.3-4.7-17.4-12.7-21.6 2.9-2.6 4.7-6.3 4.7-10.4 0-7.7-6.3-14-14-14zm0 8c3.3 0 6 2.7 6 6s-2.7 6-6 6-6-2.7-6-6 2.7-6 6-6z" />
+                <html:text x="32" y="47" font-size="18" font-weight="bold" fill="white" text-anchor="middle">₹</html:text>
+              </html:svg>
+            </html:div>
+
+            <html:div>
+              <html:span class="text-[11px] font-semibold text-slate-500 block uppercase tracking-wider">Outstanding Balance</html:span>
+              <html:span class="text-xl font-black text-[#eb3330]">Rs. 14,33,44,655.16</html:span>
+              <html:div class="text-[10px] text-emerald-700 font-bold mt-0.5 flex items-center gap-1">
+                <html:span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></html:span>
+                Refreshes every 30 mins
+              </html:div>
+            </html:div>
+          </html:div>
+
+          <!-- Search Bar -->
+          <html:div class="relative mb-4">
+            <SearchField 
+              width="100%" 
+              value="{/ledgerSearchText}"
+              liveChange=".onSearch"
+              placeholder="Search Swati Enterprises, Shrikrishna, Kailash..."
+              class="w-full bg-white border border-slate-200 rounded-xl text-sm shadow-sm p-1"
+            />
+          </html:div>
+
+          <!-- Ledger Item Lists using core:HTML since angular had dynamic lists with Tailwind classes on rows -->
+          <html:div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden divide-y divide-slate-100" id="ledgerListContainer">
+            <!-- Will inject HTML dynamically to match the angular template precisely -->
+            <core:HTML xmlns:core="sap.ui.core" content="{parts: [{path: '/ledgerData'}, {path: '/ledgerSearchText'}], formatter: '.formatLedgerList'}" />
+          </html:div>
+        </html:div>
+    </Page>
+</mvc:View>

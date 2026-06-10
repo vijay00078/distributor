@@ -1,0 +1,78 @@
+<mvc:View controllerName="distributor.controller.More"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns="sap.m">
+    <Page showHeader="false" backgroundDesign="Transparent" class="bg-transparent">
+        <html:div class="pt-2 space-y-4 animate-fade-in">
+            <html:div class="flex items-center justify-between mt-2 mb-3">
+              <html:h2 class="text-lg font-extrabold text-slate-900 uppercase tracking-wide">More Options</html:h2>
+              <html:span class="text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-bold">v2.4.6</html:span>
+            </html:div>
+
+            <!-- Quick list links of extra pages -->
+            <html:div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden divide-y divide-slate-100">
+              
+              <!-- Link to Customer Ledger -->
+              <html:div press=".navToLedger" class="p-4 flex items-center justify-between hover:bg-slate-50 active:bg-orange-50 transition-colors cursor-pointer group" onclick="window.moreApp.navToLedger()">
+                <html:div class="flex items-center gap-3">
+                  <html:div class="w-9 h-9 rounded-xl bg-orange-100 text-[#f37a20] flex items-center justify-center">
+                    <html:svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <html:path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                    </html:svg>
+                  </html:div>
+                  <html:span class="text-sm font-bold text-slate-800">Customer Ledger Screen</html:span>
+                </html:div>
+                <html:svg class="w-5 h-5 text-slate-400 group-hover:text-[#f37a20] transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <html:path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </html:svg>
+              </html:div>
+
+              <!-- Link to Updates Page -->
+              <html:div press=".navToUpdates" class="p-4 flex items-center justify-between hover:bg-slate-50 active:bg-orange-50 transition-colors cursor-pointer group" onclick="window.moreApp.navToUpdates()">
+                <html:div class="flex items-center gap-3">
+                  <html:div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                    <html:svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <html:path stroke-linecap="round" stroke-linejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.357.205a1.125 1.125 0 01-1.4-.205l-1.917-1.916m3.15-3.178c.09-.347.137-.708.137-1.08 0-.372-.047-.733-.137-1.08m0 2.16a24.718 24.718 0 014.29 4.29m-4.29-6.45c1.402-1.402 3.15-2.5 5.08-3.18a.375.375 0 01.442.176l.162.325a1.125 1.125 0 01-.153 1.256l-1.464 1.464" />
+                    </html:svg>
+                  </html:div>
+                  <html:span class="text-sm font-bold text-slate-800">Interactive Product Updates</html:span>
+                </html:div>
+                <html:svg class="w-5 h-5 text-slate-400 group-hover:text-[#f37a20] transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <html:path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </html:svg>
+              </html:div>
+
+              <!-- Share App -->
+              <html:div press=".showSystemNotice('App Sharer', 'Generating your personalized distributor invite code...')" class="p-4 flex items-center justify-between hover:bg-slate-50 active:bg-orange-50 transition-colors cursor-pointer group" onclick="window.moreApp.showSystemNotice('App Sharer', 'Generating your personalized distributor invite code...')">
+                <html:div class="flex items-center gap-3">
+                  <html:div class="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center">
+                    <html:svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <html:path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186l5.303-3.181m0 0a2.25 2.25 0 102.822-2.824m-2.822 4.13a2.25 2.25 0 11-2.83-2.503m4.733 5.41a2.25 2.25 0 111.453 3.472m-1.453-3.472l-5.303 3.181" />
+                    </html:svg>
+                  </html:div>
+                  <html:span class="text-sm font-bold text-slate-800">Invite Sub-Dealers</html:span>
+                </html:div>
+                <html:svg class="w-5 h-5 text-slate-400 group-hover:text-[#f37a20] transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <html:path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </html:svg>
+              </html:div>
+
+              <!-- App Preferences -->
+              <html:div press=".showSystemNotice('Preferences', 'Toggle app settings or dark themes in upcoming version!')" class="p-4 flex items-center justify-between hover:bg-slate-50 active:bg-orange-50 transition-colors cursor-pointer group" onclick="window.moreApp.showSystemNotice('Preferences', 'Toggle app settings or dark themes in upcoming version!')">
+                <html:div class="flex items-center gap-3">
+                  <html:div class="w-9 h-9 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center">
+                    <html:svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <html:path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.43l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.991l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.28z" />
+                      <html:path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </html:svg>
+                  </html:div>
+                  <html:span class="text-sm font-bold text-slate-800">Portal Settings</html:span>
+                </html:div>
+                <html:svg class="w-5 h-5 text-slate-400 group-hover:text-[#f37a20] transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <html:path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </html:svg>
+              </html:div>
+            </html:div>
+        </html:div>
+    </Page>
+</mvc:View>

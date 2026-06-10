@@ -1,0 +1,122 @@
+<mvc:View controllerName="distributor.controller.Sauda"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns="sap.m">
+    <Page showHeader="false" backgroundDesign="Transparent" class="bg-transparent">
+        <html:div class="pt-2 space-y-4 animate-fade-in">
+            <html:div class="flex justify-between items-center mt-2">
+              <html:h2 class="text-lg font-extrabold text-slate-900 uppercase tracking-wide">Sauda Overview</html:h2>
+              <html:span class="text-xs bg-orange-100 text-[#f37a20] font-bold px-2 py-0.5 rounded border border-orange-200">Active</html:span>
+            </html:div>
+
+            <!-- Visual Graph displaying pending Saudas by days -->
+            <html:div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 mt-4">
+              <html:h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Pending Days Distribution (MT)</html:h3>
+              
+              <html:div class="flex justify-between items-end h-40 pt-6 px-2 relative">
+                <!-- Helper lines -->
+                <html:div class="absolute inset-x-0 bottom-0 border-b border-slate-100 w-full"></html:div>
+                <html:div class="absolute inset-x-0 bottom-10 border-b border-slate-100 w-full"></html:div>
+                <html:div class="absolute inset-x-0 bottom-20 border-b border-slate-100 w-full"></html:div>
+                <html:div class="absolute inset-x-0 bottom-30 border-b border-slate-100 w-full"></html:div>
+
+                <!-- 0-10 Days (0 value) -->
+                <html:div class="flex flex-col items-center flex-1">
+                  <html:div class="text-[10px] font-bold text-slate-400 mb-1">0</html:div>
+                  <html:div class="w-8 bg-[#fab915] rounded-t opacity-10" style="height: 2px"></html:div>
+                  <html:span class="text-[10px] font-bold text-slate-600 mt-2">0-10</html:span>
+                </html:div>
+
+                <!-- 11-20 Days (0 value) -->
+                <html:div class="flex flex-col items-center flex-1">
+                  <html:div class="text-[10px] font-bold text-slate-400 mb-1">0</html:div>
+                  <html:div class="w-8 bg-[#fab915] rounded-t opacity-10" style="height: 2px"></html:div>
+                  <html:span class="text-[10px] font-bold text-slate-600 mt-2">11-20</html:span>
+                </html:div>
+
+                <!-- 21-30 Days (approx 1,800 MT value) -->
+                <html:div class="flex flex-col items-center flex-1">
+                  <html:div class="text-[10px] font-bold text-slate-800 mb-1">1,820</html:div>
+                  <html:div class="w-8 bg-[#fab915] rounded-t-sm shadow-2xs transition-all hover:brightness-105 duration-300" style="height: 38%"></html:div>
+                  <html:span class="text-[10px] font-bold text-slate-600 mt-2">21-30</html:span>
+                </html:div>
+
+                <!-- >30 Days (approx 5,200 MT value) -->
+                <html:div class="flex flex-col items-center flex-1">
+                  <html:div class="text-[10px] font-bold text-slate-800 mb-1">5,268</html:div>
+                  <html:div class="w-8 bg-[#fab915] rounded-t-sm shadow-xs transition-all hover:brightness-105 duration-300 animate-pulse-slow" style="height: 85%"></html:div>
+                  <html:span class="text-[10px] font-bold text-slate-600 mt-2">&gt;30</html:span>
+                </html:div>
+              </html:div>
+            </html:div>
+
+            <!-- Action Tiles Matrix -->
+            <html:div class="grid grid-cols-2 gap-3.5 mt-4">
+              
+              <!-- Tile 1: Sauda Extension (Green) -->
+              <html:button onclick="window.saudaApp.openQuickAction('Sauda Extension')" class="bg-[#0e984a] text-white p-4 rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] shadow-sm text-left flex flex-col justify-between h-28 hover:brightness-105 active:scale-95 transition-all w-full border-none cursor-pointer">
+                <html:div class="flex justify-between items-start w-full">
+                  <html:svg class="w-8 h-8 text-white/90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <html:path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75v4.5m0-4.5h-4.5m4.5 0L15 9m5.25 11.25v-4.5m0 4.5h-4.5m4.5 0L15 15" />
+                  </html:svg>
+                </html:div>
+                <html:span class="text-sm font-bold leading-snug">Sauda Extension</html:span>
+              </html:button>
+
+              <!-- Tile 2: Booked Sauda (Blue) -> Navigates to Booked Sauda page -->
+              <html:button onclick="window.saudaApp.navToBookedSauda()" class="bg-[#0a7fb0] text-white p-4 rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] shadow-sm text-left flex flex-col justify-between h-28 hover:brightness-105 active:scale-95 transition-all w-full border-none cursor-pointer">
+                <html:div class="flex justify-between items-start w-full">
+                  <html:svg class="w-8 h-8 text-white/90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <html:path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.375m0-10.5h10.5a2.25 2.25 0 012.25 2.25v10.5a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6a2.25 2.25 0 012.25-2.25h5.25m4.5 0V3m0 2.25V18" />
+                  </html:svg>
+                </html:div>
+                <html:span class="text-sm font-bold leading-snug">Booked Sauda</html:span>
+              </html:button>
+
+              <!-- Tile 3: Price Discovery (Cyan/Light Blue) -->
+              <html:button onclick="window.saudaApp.openQuickAction('Price Discovery')" class="bg-[#009bde] text-white p-4 rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] shadow-sm text-left flex flex-col justify-between h-28 hover:brightness-105 active:scale-95 transition-all w-full border-none cursor-pointer">
+                <html:div class="flex justify-between items-start w-full">
+                  <html:svg class="w-8 h-8 text-white/90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <html:path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM12 7v6m-3-3h6" />
+                  </html:svg>
+                </html:div>
+                <html:span class="text-sm font-bold leading-snug">Price Discovery</html:span>
+              </html:button>
+
+              <!-- Tile 4: Limit Enhance (Dark Indigo) -->
+              <html:button onclick="window.saudaApp.openQuickAction('Limit Enhance')" class="bg-[#2f2d7a] text-white p-4 rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] shadow-sm text-left flex flex-col justify-between h-28 hover:brightness-105 active:scale-95 transition-all w-full border-none cursor-pointer">
+                <html:div class="flex justify-between items-start w-full">
+                  <html:svg class="w-8 h-8 text-white/90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <html:path stroke-linecap="round" stroke-linejoin="round" d="M12 9v12m0-12l3.75 3.75M12 9L8.25 12.75M19.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5" />
+                  </html:svg>
+                </html:div>
+                <html:span class="text-sm font-bold leading-snug">Limit Enhance</html:span>
+              </html:button>
+
+              <!-- Tile 5: Sales Order (Yellow) -->
+              <html:button onclick="window.saudaApp.openQuickAction('Sales Order')" class="bg-[#fab915] text-slate-900 p-4 rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] shadow-sm text-left flex flex-col justify-between h-28 hover:brightness-105 active:scale-95 transition-all w-full border-none cursor-pointer">
+                <html:div class="flex justify-between items-start w-full">
+                  <html:svg class="w-8 h-8 text-slate-800" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <html:path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.129-1.125v-3.02M15 18.75a1.5 1.5 0 11-3 0m3 0H9" />
+                  </html:svg>
+                </html:div>
+                <html:span class="text-sm font-black leading-snug text-slate-900">Sales Order</html:span>
+              </html:button>
+
+              <!-- Tile 6: Sauda Approval (Burgundy with Float Button) -->
+              <html:button onclick="window.saudaApp.openSaudaApprovalWizard()" class="bg-[#941b55] text-white p-4 rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] shadow-sm text-left flex flex-col justify-between h-28 relative overflow-hidden hover:brightness-105 active:scale-95 transition-all w-full border-none cursor-pointer">
+                <html:div class="flex justify-between items-start w-full">
+                  <html:svg class="w-8 h-8 text-white/90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <html:path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5a3.375 3.375 0 003.375 3.375h1.5" />
+                  </html:svg>
+                </html:div>
+                <html:span class="text-sm font-bold leading-snug">Sauda Approval</html:span>
+                <html:div class="absolute -bottom-1 -right-1 w-10 h-10 bg-red-500 rounded-tl-2xl flex items-center justify-center font-bold text-lg text-white shadow">
+                  +
+                </html:div>
+              </html:button>
+
+            </html:div>
+        </html:div>
+    </Page>
+</mvc:View>

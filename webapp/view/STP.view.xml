@@ -1,0 +1,49 @@
+<mvc:View controllerName="distributor.controller.Stp"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns="sap.m">
+    <Page showHeader="false" backgroundDesign="Transparent" class="bg-transparent">
+        <html:div class="pt-2 space-y-4 animate-fade-in">
+            <html:div class="flex justify-between items-center mt-2">
+              <html:h2 class="text-lg font-extrabold text-slate-900 uppercase tracking-wide">STP Console</html:h2>
+              <html:span class="text-xs bg-indigo-50 text-indigo-600 font-bold px-2.5 py-1 rounded-full border border-indigo-100">STP Active</html:span>
+            </html:div>
+
+            <!-- Simulated Pipeline Progress -->
+            <html:div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-4">
+              <html:div class="p-3 bg-indigo-50/50 rounded-xl border border-indigo-100 text-xs text-indigo-900 leading-relaxed font-medium">
+                Straight Through Processing (STP) automates booking allocations directly to plants. View pipeline queues below:
+              </html:div>
+
+              <html:div class="space-y-4">
+                <!-- Queue 1 -->
+                <html:div class="flex items-center justify-between border-b border-slate-100 pb-3 last:border-b-0">
+                  <html:div>
+                    <html:h4 class="text-xs font-bold text-slate-800">Sauda #00014911 -&gt; Plant Allocation</html:h4>
+                    <html:span class="text-[9px] text-slate-400 font-medium">Allocated: Visakhapatnam Port Terminal</html:span>
+                  </html:div>
+                  <html:span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-100">Completed</html:span>
+                </html:div>
+
+                <!-- Queue 2 -->
+                <html:div class="flex items-center justify-between border-b border-slate-100 pb-3 last:border-b-0">
+                  <html:div>
+                    <html:h4 class="text-xs font-bold text-slate-800">Sauda #00014912 -&gt; Quality Release</html:h4>
+                    <html:span class="text-[9px] text-slate-400 font-medium">Release Code: SP-SOYA-4912</html:span>
+                  </html:div>
+                  <html:span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-100">Completed</html:span>
+                </html:div>
+
+                <!-- Queue 3 -->
+                <html:div class="flex items-center justify-between border-b border-slate-100 pb-3 last:border-b-0">
+                  <html:div>
+                    <html:h4 class="text-xs font-bold text-slate-800">Sauda #119 -&gt; Credit Limit Lock</html:h4>
+                    <html:span class="text-[9px] text-slate-400 font-medium">Enhancement check in progress</html:span>
+                  </html:div>
+                  <html:span class="bg-[#fab915]/10 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-100">Processing</html:span>
+                </html:div>
+              </html:div>
+            </html:div>
+        </html:div>
+    </Page>
+</mvc:View>

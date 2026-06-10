@@ -1,0 +1,31 @@
+<mvc:View controllerName="distributor.controller.BookedSauda"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns="sap.m">
+    <Page showHeader="false" backgroundDesign="Transparent" class="bg-transparent">
+        <html:div class="pt-2 animate-fade-in">
+          <!-- Back header -->
+          <html:div class="flex justify-between items-center mb-4">
+            <html:div class="flex items-center gap-3">
+              <html:button press=".onNavBack" class="p-1.5 rounded-full hover:bg-slate-200 text-slate-700 transition-colors" onclick="window.bookedSaudaApp.onNavBack()">
+                <html:svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <html:path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </html:svg>
+              </html:button>
+              <html:h2 class="text-lg font-bold text-slate-900">Booked Sauda Status</html:h2>
+            </html:div>
+            <!-- Filter icon -->
+            <html:button press=".toggleSaudaFilter" class="p-2 bg-white rounded-xl shadow-sm hover:bg-slate-50 text-slate-600 transition-colors" onclick="window.bookedSaudaApp.toggleSaudaFilter()">
+              <html:svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <html:path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+              </html:svg>
+            </html:button>
+          </html:div>
+
+          <!-- Collapsible Lists using core:HTML to mimic exactly the structural dynamic nesting of angular -->
+          <html:div class="space-y-3" id="bookedSaudaListContainer">
+            <core:HTML xmlns:core="sap.ui.core" content="{path: '/bookingsList', formatter: '.formatBookingsList'}" />
+          </html:div>
+        </html:div>
+    </Page>
+</mvc:View>

@@ -1,0 +1,163 @@
+{
+  "_version": "1.81.0",
+  "sap.app": {
+    "id": "distributor",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.20.2",
+      "toolsId": "d2ede22d-c9f9-4caa-a89e-f170c9709690"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.148.1",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "distributor.i18n.i18n"
+        }
+      },
+      "": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/data.json"
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "distributor.view",
+        "async": true,
+        "viewPath": "distributor.view"
+      },
+      "routes": [
+        {
+          "name": "home",
+          "pattern": "",
+          "target": ["home"]
+        },
+        {
+          "name": "sauda",
+          "pattern": "sauda",
+          "target": ["sauda"]
+        },
+        {
+          "name": "sales",
+          "pattern": "sales",
+          "target": ["sales"]
+        },
+        {
+          "name": "stp",
+          "pattern": "stp",
+          "target": ["stp"]
+        },
+        {
+          "name": "more",
+          "pattern": "more",
+          "target": ["more"]
+        },
+        {
+          "name": "ledger",
+          "pattern": "ledger",
+          "target": ["ledger"]
+        },
+        {
+          "name": "bookedsauda",
+          "pattern": "bookedsauda",
+          "target": ["bookedsauda"]
+        },
+        {
+          "name": "updates",
+          "pattern": "updates",
+          "target": ["updates"]
+        }
+      ],
+      "targets": {
+        "home": {
+          "id": "Home",
+          "viewName": "Home"
+        },
+        "sauda": {
+          "id": "Sauda",
+          "viewName": "Sauda"
+        },
+        "sales": {
+          "id": "Sales",
+          "viewName": "Sales"
+        },
+        "stp": {
+          "id": "Stp",
+          "viewName": "Stp"
+        },
+        "more": {
+          "id": "More",
+          "viewName": "More"
+        },
+        "ledger": {
+          "id": "Ledger",
+          "viewName": "Ledger"
+        },
+        "bookedsauda": {
+          "id": "BookedSauda",
+          "viewName": "BookedSauda"
+        },
+        "updates": {
+          "id": "Updates",
+          "viewName": "Updates"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "distributor.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}

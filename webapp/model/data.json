@@ -1,0 +1,60 @@
+{
+  "activeSaudaMetrics": {
+    "target": 15000,
+    "achievement": 8200,
+    "weekData": [
+      { "week": "Week 1", "target": 3750, "achievement": 2100 },
+      { "week": "Week 2", "target": 3750, "achievement": 3000 },
+      { "week": "Week 3", "target": 3750, "achievement": 3100 },
+      { "week": "Week 4", "target": 3750, "achievement": 0 }
+    ],
+    "expired": "21.14 MT",
+    "nearExpired": "168.776 MT",
+    "todaysRate": "Average Book Rate",
+    "pendingSauda": "2268.486 MT",
+    "overDue": "₹ 9625087.08",
+    "tomorrowDue": "₹ 15260561.00"
+  },
+  "ledgerData": [
+    { "name": "Swati Enterprises", "outstanding": 143344655.16, "location": "Pune" },
+    { "name": "Shrikrishna Traders", "outstanding": 5000000.00, "location": "Mumbai" },
+    { "name": "Kailash Distributors", "outstanding": 2500000.00, "location": "Nashik" }
+  ],
+  "bookingsList": [
+    {
+      "name": "Adithi Trading",
+      "location": "Visakhapatnam-Andhra Pradesh",
+      "pin": "211345",
+      "expanded": false,
+      "bookings": [
+        { "id": "00014890", "date": "08-08-2022", "status": "Approved", "product": "MUSTARD OIL (2 SKU)" }
+      ]
+    },
+    {
+      "name": "RAJ SALES",
+      "location": "Visakhapatnam-Andhra Pradesh",
+      "pin": "2112934",
+      "expanded": false,
+      "bookings": [
+        { "id": "00014902", "date": "10-08-2022", "status": "Approved", "product": "SOYA BEAN OIL (1 SKU)" }
+      ]
+    },
+    {
+      "name": "AADINATH TRENDING COMPANY",
+      "location": "Visakhapatnam-Andhra Pradesh",
+      "pin": "2112932",
+      "expanded": true,
+      "bookings": [
+        { "id": "00014911", "date": "11-08-2022", "status": "Approved", "product": "SOYA BEAN OIL (1 SKU)" },
+        { "id": "00014912", "date": "11-08-2022", "status": "Approved", "product": "SOYA BEAN OIL (1 SKU)" },
+        { "id": "119", "date": "16-08-2022", "status": "Approved", "product": "SOYA BEAN OIL (1 SKU)" }
+      ]
+    }
+  ],
+  "distributorList": ["All Distributor", "Swati Enterprises", "Shrikrishna Traders", "Kailash Distributors"],
+  "selectedDistributor": "All Distributor",
+  "selectedSaudaSalesTab": "Sauda",
+  "selectedTimeframe": "MTD",
+  "currentTime": "05:24 PM",
+  "ledgerSearchText": ""
+}

@@ -1,0 +1,110 @@
+<mvc:View controllerName="distributor.controller.Sales"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns="sap.m">
+    <Page showHeader="false" backgroundDesign="Transparent" class="bg-transparent">
+        <html:div class="pt-2 space-y-4 animate-fade-in">
+            <html:div class="flex justify-between items-center mt-2">
+              <html:h2 class="text-lg font-extrabold text-slate-900 uppercase tracking-wide">Sales Analytics</html:h2>
+              <html:span class="text-xs bg-emerald-50 text-emerald-600 font-bold px-2.5 py-1 rounded-full border border-emerald-100">Live</html:span>
+            </html:div>
+
+            <!-- Interactive Sales Metrics card -->
+            <html:div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-4">
+              <html:div class="flex justify-between items-center">
+                <html:div>
+                  <html:span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Sales Volume</html:span>
+                  <html:h3 class="text-2xl font-black text-slate-800 mt-1">1,248.80 L</html:h3>
+                </html:div>
+                <html:span class="text-[10px] bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full font-bold">↑ 14.2% MoM</html:span>
+              </html:div>
+
+              <!-- Mini Chart -->
+              <html:div class="h-28 flex items-end justify-between gap-1 px-1">
+                <html:div class="w-full bg-slate-100 rounded-sm overflow-hidden h-full flex items-end">
+                  <html:div class="bg-gradient-to-t from-[#f37a20] to-[#fab915] w-full rounded-t-xs" style="height: 30%"></html:div>
+                </html:div>
+                <html:div class="w-full bg-slate-100 rounded-sm overflow-hidden h-full flex items-end">
+                  <html:div class="bg-gradient-to-t from-[#f37a20] to-[#fab915] w-full rounded-t-xs" style="height: 45%"></html:div>
+                </html:div>
+                <html:div class="w-full bg-slate-100 rounded-sm overflow-hidden h-full flex items-end">
+                  <html:div class="bg-gradient-to-t from-[#f37a20] to-[#fab915] w-full rounded-t-xs" style="height: 35%"></html:div>
+                </html:div>
+                <html:div class="w-full bg-slate-100 rounded-sm overflow-hidden h-full flex items-end">
+                  <html:div class="bg-gradient-to-t from-[#f37a20] to-[#fab915] w-full rounded-t-xs" style="height: 60%"></html:div>
+                </html:div>
+                <html:div class="w-full bg-slate-100 rounded-sm overflow-hidden h-full flex items-end">
+                  <html:div class="bg-gradient-to-t from-[#f37a20] to-[#fab915] w-full rounded-t-xs" style="height: 75%"></html:div>
+                </html:div>
+                <html:div class="w-full bg-slate-100 rounded-sm overflow-hidden h-full flex items-end">
+                  <html:div class="bg-gradient-to-t from-[#f37a20] to-[#fab915] w-full rounded-t-xs" style="height: 55%"></html:div>
+                </html:div>
+                <html:div class="w-full bg-slate-100 rounded-sm overflow-hidden h-full flex items-end">
+                  <html:div class="bg-gradient-to-t from-[#f37a20] to-[#fab915] w-full rounded-t-xs" style="height: 90%"></html:div>
+                </html:div>
+                <html:div class="w-full bg-slate-100 rounded-sm overflow-hidden h-full flex items-end">
+                  <html:div class="bg-gradient-to-t from-[#f37a20] to-[#fab915] w-full rounded-t-xs" style="height: 80%"></html:div>
+                </html:div>
+                <html:div class="w-full bg-slate-100 rounded-sm overflow-hidden h-full flex items-end">
+                  <html:div class="bg-gradient-to-t from-[#f37a20] to-[#fab915] w-full rounded-t-xs" style="height: 100%"></html:div>
+                </html:div>
+              </html:div>
+              <html:div class="flex justify-between text-[9px] text-slate-400 font-bold uppercase tracking-wider px-1">
+                <html:span>Oct 25</html:span>
+                <html:span>Dec 25</html:span>
+                <html:span>Feb 26</html:span>
+                <html:span>Apr 26</html:span>
+                <html:span>Jun 26</html:span>
+              </html:div>
+            </html:div>
+
+            <!-- Segment Sales distribution -->
+            <html:div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-3">
+              <html:h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Sales by Product Family</html:h3>
+              
+              <html:div class="space-y-2.5">
+                <!-- Soya Oil -->
+                <html:div>
+                  <html:div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                    <html:span>Soya Bean Edible Oil</html:span>
+                    <html:span>42% (524.5 L)</html:span>
+                  </html:div>
+                  <html:div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                    <html:div class="h-full bg-orange-500 rounded-full" style="width: 42%"></html:div>
+                  </html:div>
+                </html:div>
+                <!-- Mustard Oil -->
+                <html:div>
+                  <html:div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                    <html:span>Kachi Ghani Mustard Oil</html:span>
+                    <html:span>28% (349.6 L)</html:span>
+                  </html:div>
+                  <html:div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                    <html:div class="h-full bg-yellow-500 rounded-full" style="width: 28%"></html:div>
+                  </html:div>
+                </html:div>
+                <!-- Soya Chunks -->
+                <html:div>
+                  <html:div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                    <html:span>Fortune Soya Chunks</html:span>
+                    <html:span>18% (224.8 L)</html:span>
+                  </html:div>
+                  <html:div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                    <html:div class="h-full bg-emerald-500 rounded-full" style="width: 18%"></html:div>
+                  </html:div>
+                </html:div>
+                <!-- Besan & Others -->
+                <html:div>
+                  <html:div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                    <html:span>Gram Besan &amp; Others</html:span>
+                    <html:span>12% (149.9 L)</html:span>
+                  </html:div>
+                  <html:div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                    <html:div class="h-full bg-sky-500 rounded-full" style="width: 12%"></html:div>
+                  </html:div>
+                </html:div>
+              </html:div>
+            </html:div>
+        </html:div>
+    </Page>
+</mvc:View>
