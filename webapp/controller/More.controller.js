@@ -11,6 +11,7 @@ sap.ui.define([
         },
 
         navToLedger: function () {
+            this.getView().getModel().setProperty("/ledgerSource", "more");
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.navTo("ledger");
         },

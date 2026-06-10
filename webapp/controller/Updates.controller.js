@@ -12,8 +12,8 @@ sap.ui.define([
 
         onNavBack: function () {
             var oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo("home");
-            this.getView().getModel().setProperty("/selectedNavTab", "home");
+            oRouter.navTo("more");
+            this.getView().getModel().setProperty("/selectedNavTab", "more");
         },
 
         showUpdateMessage: function (sTopic) {

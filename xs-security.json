@@ -1,0 +1,7 @@
+{
+  "xsappname": "distributor-app",
+  "tenant-mode": "dedicated",
+  "description": "Security profile of distributor application",
+  "scopes": [],
+  "role-templates": []
+}

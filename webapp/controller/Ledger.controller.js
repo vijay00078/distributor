@@ -8,17 +8,55 @@ sap.ui.define([
             if (!window.ledgerApp) {
                 window.ledgerApp = this;
             }
+
+            this.getView().addEventDelegate({
+                onAfterRendering: function () {
+                    var domRef = this.getView().getDomRef();
+                    if (domRef) {
+                        var domEl = domRef.querySelector('input[placeholder*="Search Swati"]');
+                        if (domEl && !domEl._hasInputListener) {
+                            domEl.addEventListener("input", function(e) {
+                                window.ledgerApp.onSearchHtml(e.target.value);
+                            });
+                            domEl._hasInputListener = true;
+                        }
+                    }
+                }.bind(this)
+            });
         },
 
         onNavBack: function () {
+            var oModel = this.getView().getModel();
+            var sSource = oModel.getProperty("/ledgerSource") || "home";
             var oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo("home");
-            this.getView().getModel().setProperty("/selectedNavTab", "home");
+            oRouter.navTo(sSource);
+            oModel.setProperty("/selectedNavTab", sSource);
         },
 
-        onSearch: function (oEvent) {
-            var sQuery = oEvent.getParameter("newValue");
-            this.getView().getModel().setProperty("/ledgerSearchText", sQuery);
+        onSearchHtml: function (val) {
+            this.getView().getModel().setProperty("/ledgerSearchText", val);
+        },
+
+        clearSearch: function() {
+            this.getView().getModel().setProperty("/ledgerSearchText", "");
+            var domRef = this.getView().getDomRef();
+            if (domRef) {
+                var domEl = domRef.querySelector('input[placeholder*="Search Swati"]');
+                if (domEl) {
+                    domEl.value = "";
+                }
+            }
+        },
+
+        formatClearButton: function (sSearchText) {
+            if (sSearchText) {
+                return '<button onclick="window.ledgerApp.clearSearch()" class="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-600">' +
+                       '  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">' +
+                       '    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />' +
+                       '  </svg>' +
+                       '</button>';
+            }
+            return '<div style="display:none;"></div>';
         },
 
         formatLedgerList: function (aLedgerData, sSearchText) {
@@ -38,7 +76,7 @@ sap.ui.define([
                 return '<div class="p-8 text-center text-slate-400 text-sm">No customers found matching "' + sSearchText + '"</div>';
             }
 
-            var html = '';
+            var html = '<div>';
             filtered.forEach(function(item) {
                 var amt = item.outstanding.toLocaleString('en-IN', {
                     minimumFractionDigits: 2,
@@ -68,6 +106,7 @@ sap.ui.define([
                 html += '  </div>';
                 html += '</div>';
             }.bind(this));
+            html += '</div>';
 
             return html;
         },

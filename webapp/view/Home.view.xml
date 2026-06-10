@@ -6,11 +6,11 @@
         <html:div class="pt-2 space-y-4 animate-fade-in">
             
             <!-- Distributor Filter Dropdown -->
-            <html:div class="relative bg-white rounded-xl border border-slate-200 px-4 py-2 mt-2 shadow-2xs hover:border-[#f37a20] transition-colors">
+            <html:div class="relative bg-white rounded-xl border border-slate-200 px-4 py-2 mt-2 shadow-2xs hover:border-[#f37a20] focus-within:border-black transition-colors">
               <html:span class="absolute -top-2 left-3 bg-[#ffffff] px-1 text-[10px] text-[#f37a20] font-bold tracking-wider">Distributor Name</html:span>
               <Select 
                 width="100%"
-                class="w-full bg-transparent text-sm font-bold text-slate-800 outline-none pr-8 cursor-pointer py-1.5"
+                class="custom-select-no-border w-full bg-transparent text-sm font-bold text-slate-800 outline-none pr-8 cursor-pointer"
                 selectedKey="{/selectedDistributor}"
                 items="{/distributorList}"
                 change=".onDistributorChange"
@@ -21,7 +21,7 @@
 
             <!-- Sauda & Sales Tabs (Pills) -->
             <html:div class="flex bg-white p-1 rounded-2xl shadow-3xs border border-slate-100">
-               <core:HTML xmlns:core="sap.ui.core" content="{path: '/selectedSaudaSalesTab', formatter: '.formatSaudaSalesTabs'}" />
+               <core:HTML sanitizeContent="false" xmlns:core="sap.ui.core" content="{path: '/selectedSaudaSalesTab', formatter: '.formatSaudaSalesTabs'}" />
             </html:div>
 
             <!-- Target and Achievement Progress Panel -->
@@ -41,7 +41,7 @@
 
                 <!-- MTD / QTD / YTD Filters -->
                 <html:div class="flex bg-slate-100 p-0.5 rounded-lg border border-slate-200">
-                    <core:HTML xmlns:core="sap.ui.core" content="{path: '/selectedTimeframe', formatter: '.formatTimeframeFilters'}" />
+                    <core:HTML sanitizeContent="false" xmlns:core="sap.ui.core" content="{path: '/selectedTimeframe', formatter: '.formatTimeframeFilters'}" />
                 </html:div>
               </html:div>
 
@@ -49,7 +49,7 @@
               <html:div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden mb-5">
                 <html:div 
                   class="h-full bg-gradient-to-r from-[#fab915] to-[#f37a20] rounded-full transition-all duration-500"
-                  style="width: {path: '/', formatter: '.formatProgressBarWidth'}"
+                  style="width: {path: '/activeSaudaMetrics', formatter: '.formatProgressBarWidth'}"
                 ></html:div>
               </html:div>
 
@@ -62,7 +62,7 @@
                   <html:div class="absolute inset-x-0 bottom-16 border-b border-slate-100 w-full"></html:div>
                   <html:div class="absolute inset-x-0 bottom-24 border-b border-slate-100 w-full"></html:div>
 
-                  <core:HTML xmlns:core="sap.ui.core" content="{path: '/', formatter: '.formatWeeklyChart'}" />
+                  <core:HTML sanitizeContent="false" xmlns:core="sap.ui.core" content="{path: '/activeSaudaMetrics', formatter: '.formatWeeklyChart'}" />
                 </html:div>
 
                 <!-- Chart Legend -->

@@ -2,7 +2,7 @@
 
 specVersion: "4.0"
 metadata:
-  name: distributor
+  name: distributor-app
 type: application
 server:
   customMiddleware:

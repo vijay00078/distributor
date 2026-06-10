@@ -9,6 +9,20 @@ sap.ui.define([
             if (!window.homeApp) {
                 window.homeApp = this;
             }
+
+            this.getView().addEventDelegate({
+                onAfterRendering: function () {
+                    // Fix SAPUI5 lowercasing viewBox in SVG elements which breaks scaling
+                    var svgs = document.querySelectorAll('svg[viewbox]');
+                    svgs.forEach(function(svg) {
+                        var vb = svg.getAttribute('viewbox');
+                        if (vb) {
+                            svg.removeAttribute('viewbox');
+                            svg.setAttribute('viewBox', vb);
+                        }
+                    });
+                }
+            });
         },
 
         onDistributorChange: function (oEvent) {
@@ -67,17 +81,16 @@ sap.ui.define([
                    '</div>';
         },
 
-        formatProgressBarWidth: function (oData) {
-            if (!oData || !oData.activeSaudaMetrics) return "0%";
-            var metrics = oData.activeSaudaMetrics;
-            var percent = (metrics.achievement / metrics.target) * 100;
+        formatProgressBarWidth: function (activeSaudaMetrics) {
+            if (!activeSaudaMetrics) return "0%";
+            var percent = (activeSaudaMetrics.achievement / activeSaudaMetrics.target) * 100;
             percent = Math.min(100, Math.max(5, percent));
             return percent + "%";
         },
 
-        formatWeeklyChart: function (oData) {
-            if (!oData || !oData.activeSaudaMetrics) return "";
-            var weekData = oData.activeSaudaMetrics.weekData;
+        formatWeeklyChart: function (activeSaudaMetrics) {
+            if (!activeSaudaMetrics || !activeSaudaMetrics.weekData) return "<div class='hidden'></div>";
+            var weekData = activeSaudaMetrics.weekData;
             
             var maxVal = 0;
             weekData.forEach(function(d) {
@@ -118,6 +131,7 @@ sap.ui.define([
         },
 
         navToLedger: function () {
+            this.getView().getModel().setProperty("/ledgerSource", "home");
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.navTo("ledger");
         },

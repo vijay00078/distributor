@@ -16,9 +16,16 @@
     "tomorrowDue": "₹ 15260561.00"
   },
   "ledgerData": [
-    { "name": "Swati Enterprises", "outstanding": 143344655.16, "location": "Pune" },
-    { "name": "Shrikrishna Traders", "outstanding": 5000000.00, "location": "Mumbai" },
-    { "name": "Kailash Distributors", "outstanding": 2500000.00, "location": "Nashik" }
+    { "name": "SWATI ENTERPRISES", "outstanding": 33032736.95, "location": "Visakhapatnam-Andhra Pradesh" },
+    { "name": "Shrikrishnashraya Trading company", "outstanding": 28880379.77, "location": "Guntur-Andhra Pradesh" },
+    { "name": "Kailash Kirana stores", "outstanding": 13841956.08, "location": "Vijayawada-Andhra Pradesh" },
+    { "name": "Jaiswal Agencies", "outstanding": 13671388.79, "location": "Visakhapatnam-Andhra Pradesh" },
+    { "name": "Madhavlal Jankilal trading pvt ltd", "outstanding": 11848838.13, "location": "Nellore-Andhra Pradesh" },
+    { "name": "KHANANI PROVISION", "outstanding": 10855503.94, "location": "Tirupati-Andhra Pradesh" },
+    { "name": "Rameshwarlal Biharilal agrawal", "outstanding": 6915994.00, "location": "Visakhapatnam-Andhra Pradesh" },
+    { "name": "Chandumal Bhagwandas", "outstanding": 6070019.79, "location": "Kakinada-Andhra Pradesh" },
+    { "name": "Prakash Sales", "outstanding": 4602658.22, "location": "Anantapur-Andhra Pradesh" },
+    { "name": "Iqbal Kirana stores", "outstanding": 3936407.14, "location": "Kurnool-Andhra Pradesh" }
   ],
   "bookingsList": [
     {

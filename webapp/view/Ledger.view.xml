@@ -7,9 +7,7 @@
           <!-- Back header -->
           <html:div class="flex items-center gap-3 mb-4">
             <html:button press=".onNavBack" class="p-1.5 rounded-full hover:bg-slate-200 text-slate-700 transition-colors" onclick="window.ledgerApp.onNavBack()">
-              <html:svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <html:path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-              </html:svg>
+              <core:HTML xmlns:core="sap.ui.core" sanitizeContent="false" content='&lt;svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /&gt;&lt;/svg&gt;' />
             </html:button>
             <html:h2 class="text-lg font-bold text-slate-900">Customer Ledger</html:h2>
           </html:div>
@@ -42,13 +40,15 @@
 
           <!-- Search Bar -->
           <html:div class="relative mb-4">
-            <SearchField 
-              width="100%" 
-              value="{/ledgerSearchText}"
-              liveChange=".onSearch"
+            <html:input 
+              id="ledgerSearchInputNative"
+              type="text" 
+              oninput="window.ledgerApp.onSearchHtml(this.value)"
               placeholder="Search Swati Enterprises, Shrikrishna, Kailash..."
-              class="w-full bg-white border border-slate-200 rounded-xl text-sm shadow-sm p-1"
+              class="w-full pl-10 pr-10 py-3 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#f37a20] focus:border-transparent transition-all shadow-sm"
             />
+            <core:HTML xmlns:core="sap.ui.core" sanitizeContent="false" content='&lt;svg class="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /&gt;&lt;/svg&gt;' />
+            <core:HTML xmlns:core="sap.ui.core" content="{path: '/ledgerSearchText', formatter: '.formatClearButton'}" />
           </html:div>
 
           <!-- Ledger Item Lists using core:HTML since angular had dynamic lists with Tailwind classes on rows -->

@@ -84,9 +84,20 @@ sap.ui.define([
             this.getOwnerComponent().getModel().setProperty("/activeModal", null);
         },
 
+        submitNewSauda: function () {
+            var oModel = this.getOwnerComponent().getModel();
+            this.closeModal();
+            setTimeout(function() {
+                oModel.setProperty("/activeModal", {
+                    title: "Booking Authenticated!",
+                    message: "Successfully booked Sauda for selected product. Pipeline code was auto-generated."
+                });
+            }, 400);
+        },
+
         formatModal: function (oActiveModal) {
             if (!oActiveModal) {
-                return "";
+                return "<div style=\"display:none;\"></div>";
             }
 
             var title = oActiveModal.title || "";
@@ -103,6 +114,63 @@ sap.ui.define([
                               '    <span class="font-black text-[#f37a20]">₹ 17,28,000.00</span>' +
                               '  </div>' +
                               '</div>';
+            } else if (oActiveModal.type === 'ledger_detail') {
+                var formatCurrency = function(amount) {
+                    if (amount === undefined || amount === null) return '0.00';
+                    return amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                };
+                contentHtml = '<div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 space-y-2 mt-2">' +
+                              '  <div class="flex justify-between">' +
+                              '    <span class="font-bold text-slate-400">Owner Name:</span>' +
+                              '    <span class="font-bold text-slate-800">Swati Gupta</span>' +
+                              '  </div>' +
+                              '  <div class="flex justify-between">' +
+                              '    <span class="font-bold text-slate-400">Total Outstanding:</span>' +
+                              '    <span class="font-black text-red-600">Rs. ' + formatCurrency(oActiveModal.data && oActiveModal.data.outstanding) + '</span>' +
+                              '  </div>' +
+                              '  <div class="flex justify-between">' +
+                              '    <span class="font-bold text-slate-400">Overdue Days:</span>' +
+                              '    <span class="font-bold text-orange-600">45 Days</span>' +
+                              '  </div>' +
+                              '  <div class="flex justify-between">' +
+                              '    <span class="font-bold text-slate-400">Credit Limit Status:</span>' +
+                              '    <span class="font-bold text-emerald-600">Healthy</span>' +
+                              '  </div>' +
+                              '</div>';
+            } else if (oActiveModal.type === 'sauda_approval_wizard') {
+                contentHtml = '<div class="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-3 mt-2">' +
+                              '  <div>' +
+                              '    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Select Distributor</label>' +
+                              '    <select class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs mt-1">' +
+                              '      <option value="Adithi Trading">Adithi Trading</option>' +
+                              '      <option value="RAJ SALES">RAJ SALES</option>' +
+                              '      <option value="AADINATH TRENDING COMPANY">AADINATH TRENDING COMPANY</option>' +
+                              '    </select>' +
+                              '  </div>' +
+                              '  <div>' +
+                              '    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Product Segment</label>' +
+                              '    <select class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs mt-1">' +
+                              '      <option value="SOYA BEAN OIL (1 SKU)">SOYA BEAN OIL</option>' +
+                              '      <option value="MUSTARD OIL (2 SKU)">MUSTARD OIL</option>' +
+                              '      <option value="FORTUNE BESAN (1 SKU)">FORTUNE BESAN</option>' +
+                              '    </select>' +
+                              '  </div>' +
+                              '  <div class="grid grid-cols-2 gap-2">' +
+                              '    <div>' +
+                              '      <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Quantity (MT)</label>' +
+                              '      <input type="number" value="10" class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs mt-1"/>' +
+                              '    </div>' +
+                              '    <div>' +
+                              '      <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Booking Date</label>' +
+                              '      <input type="text" value="08-06-2026" placeholder="11-08-2022" class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs mt-1"/>' +
+                              '    </div>' +
+                              '  </div>' +
+                              '</div>';
+            }
+
+            var buttonsHtml = '';
+            if (oActiveModal.type === 'sauda_approval_wizard') {
+                buttonsHtml = '<button onclick="window.distApp.submitNewSauda()" class="flex-1 py-2.5 bg-gradient-to-r from-[#f37a20] to-[#fab915] text-white rounded-xl text-xs font-bold shadow-md hover:brightness-105 active:scale-95 transition-all">Confirm & Submit</button>';
             }
 
             return '<div class="fixed inset-0 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">' +
@@ -120,6 +188,7 @@ sap.ui.define([
                    contentHtml +
                    '    </div>' +
                    '    <div class="flex gap-3">' +
+                   buttonsHtml +
                    '      <button onclick="window.distApp.closeModal()" class="flex-1 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-200 active:scale-95 transition-all">Close</button>' +
                    '    </div>' +
                    '  </div>' +

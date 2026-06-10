@@ -1,0 +1,99 @@
+_schema-version: "3.2"
+ID: distributor-app
+description: An SAP Fiori application.
+version: 0.0.1
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm install
+        - npm run build
+modules:
+  - name: distributor-app-destination-content
+    type: com.sap.application.content
+    build-parameters:
+      no-source: true
+    requires:
+      - name: distributor-app-destination-service
+        parameters:
+          content-target: true
+      - name: distributor-app-repo-host
+        parameters:
+          ServiceInstanceName: distributor-app-html5-srv
+      - name: distributor-app-uaa
+        parameters:
+          service-key:
+            name: distributor-app-uaa-key
+    parameters:
+      content:
+        instance:
+          destinations:
+            - Name: distributor-app_html5_repo_host
+              ServiceInstanceName: distributor-app-html5-srv
+              ServiceKeyName: distributor-app-repo-host-key
+              sap.cloud.service: distributor-app
+            - Authentication: OAuth2UserTokenExchange
+              Name: distributor-app_uaa
+              ServiceInstanceName: distributor-app-xsuaa-srv
+              ServiceKeyName: distributor-app-uaa-key
+              sap.cloud.service: distributor-app
+          existing_destinations_policy: ignore
+  - name: distributor-app-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: distributor-app-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - distributor-app.zip
+          name: distributor-app
+          target-path: resources/
+  - name: distributor-app
+    type: html5
+    path: .
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build
+      supported-platforms: []
+
+resources:
+  - name: distributor-app-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            destinations:
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+            existing_destinations_policy: update
+        version: 1.0.0
+      service: destination
+      service-name: distributor-app-destination-service
+      service-plan: lite
+  - name: distributor-app-uaa
+    type: org.cloudfoundry.managed-service
+    parameters:
+      path: ./xs-security.json
+      service: xsuaa
+      service-name: distributor-app-xsuaa-srv
+      service-plan: application
+  - name: distributor-app-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: distributor-app-html5-srv
+      service-plan: app-host

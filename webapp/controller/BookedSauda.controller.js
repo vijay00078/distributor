@@ -27,12 +27,12 @@ sap.ui.define([
         formatBookingsList: function (aBookings) {
             if (!aBookings) return "";
 
-            var html = '';
+            var html = '<div>';
             var viewId = this.getView().getId();
             aBookings.forEach(function(dist, index) {
                 var onClickStr = "window.bookedSaudaApp.toggleAccordion(" + index + ")";
 
-                html += '<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden transition-all duration-200">';
+                html += '<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden transition-all duration-200 mb-3">';
                 html += '  <div onclick="' + onClickStr + '" class="p-4 flex justify-between items-center cursor-pointer select-none hover:bg-slate-50">';
                 html += '    <div class="flex items-start gap-2.5">';
                 html += '      <div class="mt-1 shrink-0 text-[#f37a20]">';
@@ -78,6 +78,7 @@ sap.ui.define([
                 }
                 html += '</div>';
             });
+            html += '</div>';
             return html;
         },
 
@@ -86,13 +87,17 @@ sap.ui.define([
             var aBookings = oModel.getProperty("/bookingsList");
             if (aBookings && aBookings[index]) {
                 var wasExpanded = aBookings[index].expanded;
-                // Close all other accordions
-                aBookings.forEach(function(booking, i) {
-                    booking.expanded = false;
+                
+                // Close all accordions
+                aBookings.forEach(function(b) {
+                    b.expanded = false;
                 });
+
                 // Toggle the clicked one
                 aBookings[index].expanded = !wasExpanded;
+                
                 oModel.setProperty("/bookingsList", aBookings);
+                oModel.refresh(true);
             }
         }
     });
