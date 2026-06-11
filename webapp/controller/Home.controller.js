@@ -130,6 +130,51 @@ sap.ui.define([
             });
         },
 
+        openExpiredContracts: function () {
+            var oModel = this.getView().getModel();
+            oModel.setProperty("/activeModal", {
+                title: "Expired Contracts",
+                message: "",
+                type: 'expired_contracts'
+            });
+        },
+
+        openNearExpiredContracts: function () {
+            var oModel = this.getView().getModel();
+            oModel.setProperty("/activeModal", {
+                title: "Near Expired Contracts",
+                message: "",
+                type: 'near_expired_contracts'
+            });
+        },
+
+        openPendingSauda: function () {
+            var oModel = this.getView().getModel();
+            oModel.setProperty("/activeModal", {
+                title: "Pending Sauda",
+                message: "",
+                type: 'pending_sauda'
+            });
+        },
+
+        openOverduePayments: function () {
+            var oModel = this.getView().getModel();
+            oModel.setProperty("/activeModal", {
+                title: "Overdue Payments",
+                message: "",
+                type: 'overdue_payments'
+            });
+        },
+
+        openTomorrowDue: function () {
+            var oModel = this.getView().getModel();
+            oModel.setProperty("/activeModal", {
+                title: "Tomorrow's Incoming Dues",
+                message: "",
+                type: 'tomorrow_due'
+            });
+        },
+
         navToLedger: function () {
             this.getView().getModel().setProperty("/ledgerSource", "home");
             var oRouter = this.getOwnerComponent().getRouter();

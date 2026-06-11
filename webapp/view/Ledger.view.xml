@@ -14,11 +14,7 @@
 
           <!-- Outstanding Banner Graphic -->
           <html:div class="relative bg-gradient-to-r from-[#eef7ec] to-[#e4f3de] rounded-2xl p-4 mb-5 border border-emerald-100 shadow-sm flex items-center gap-4 overflow-hidden">
-            <html:div class="absolute -right-6 -bottom-6 opacity-10">
-              <html:svg class="w-32 h-32 text-emerald-700" fill="currentColor" viewBox="0 0 24 24">
-                <html:path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-              </html:svg>
-            </html:div>
+
             
             <!-- Custom Money Bag Illustration -->
             <html:div class="w-16 h-16 shrink-0 relative flex items-center justify-center">

@@ -2,9 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>distributor-app</title>
+    <title>Sauda - Distributor App</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#f37a20">
+    <meta name="description" content="Distributor management application for Sauda">
+    <link rel="manifest" href="pwa-manifest.json">
+
+    <!-- Apple PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Sauda">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512x512.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Force standard sizes and fonts over SAPUI5 theme defaults to match Angular/Tailwind design exactly */
@@ -39,5 +55,20 @@
         data-settings='{"id" : "distributor"}'
         data-handle-validation="true"
     ></div>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(function(registration) {
+                        console.log('[PWA] Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('[PWA] Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>

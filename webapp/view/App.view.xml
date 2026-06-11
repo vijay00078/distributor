@@ -47,6 +47,9 @@
         <!-- CUSTOM INTERACTIVE MODALS -->
         <core:HTML xmlns:core="sap.ui.core" content="{path: '/activeModal', formatter: '.formatModal'}" />
 
+        <!-- PWA INSTALL PROMPT -->
+        <core:HTML xmlns:core="sap.ui.core" content="{path: '/showPwaInstallPrompt', formatter: '.formatPwaInstallPrompt'}" />
+
         <!-- STICKY BOTTOM NAVIGATION BAR -->
         <html:div class="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-100 flex justify-around items-center px-2 py-1 shadow-lg z-50 shrink-0">
           <core:HTML xmlns:core="sap.ui.core" content="{path: '/selectedNavTab', formatter: '.formatBottomNav'}" />

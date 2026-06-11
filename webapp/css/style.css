@@ -46,6 +46,15 @@
     }
 }
 
+@keyframes slide-up {
+    from { opacity: 0; transform: translateY(100px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+    animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* Brutal override to remove SAPUI5 default borders, focus rings, and shadows from Select */
 html .custom-select-no-border,
 html .custom-select-no-border *,

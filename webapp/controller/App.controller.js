@@ -9,6 +9,38 @@ sap.ui.define([
             // Set up a clock to update time periodically, matching the Angular logic
             this._updateClock();
             this._clockInterval = setInterval(this._updateClock.bind(this), 30000);
+
+            // Show PWA install prompt after a short delay (only if not already installed)
+            var that = this;
+            setTimeout(function() {
+                that._checkAndShowPwaPrompt();
+            }, 2000);
+        },
+
+        _checkAndShowPwaPrompt: function () {
+            // Don't show if already running as installed PWA
+            var isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+                               window.navigator.standalone === true;
+            if (isStandalone) return;
+
+            // Don't show if user already dismissed it today
+            var dismissedDate = localStorage.getItem('sauda_pwa_dismissed');
+            if (dismissedDate) {
+                var dismissed = new Date(dismissedDate);
+                var now = new Date();
+                var hoursSince = (now - dismissed) / (1000 * 60 * 60);
+                if (hoursSince < 1) return;
+            }
+
+            // Show the install prompt
+            var oModel = this.getOwnerComponent().getModel();
+            oModel.setProperty("/showPwaInstallPrompt", true);
+        },
+
+        dismissPwaPrompt: function () {
+            var oModel = this.getOwnerComponent().getModel();
+            oModel.setProperty("/showPwaInstallPrompt", false);
+            localStorage.setItem('sauda_pwa_dismissed', new Date().toISOString());
         },
 
         _updateClock: function () {
@@ -84,13 +116,139 @@ sap.ui.define([
             this.getOwnerComponent().getModel().setProperty("/activeModal", null);
         },
 
+        filterExpiredContracts: function(sQuery) {
+            var sLowerQuery = sQuery.toLowerCase();
+            var aRows = document.querySelectorAll('.expired-contract-row');
+            
+            aRows.forEach(function(row) {
+                var customerNameCell = row.querySelector('.customer-name');
+                if (customerNameCell) {
+                    var customerName = customerNameCell.textContent || customerNameCell.innerText;
+                    if (customerName.toLowerCase().indexOf(sLowerQuery) > -1) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                }
+            });
+        },
+
+        formatPwaInstallPrompt: function (bShow) {
+            if (!bShow) {
+                return '<div style="display:none;"></div>';
+            }
+
+            // Detect platform for tailored instructions
+            var ua = navigator.userAgent || '';
+            var isIOS = /iPad|iPhone|iPod/.test(ua);
+            var isAndroid = /Android/.test(ua);
+
+            if (!isIOS && !isAndroid && !/Mobi/i.test(ua)) {
+                // Do not show install prompt on desktop
+                return '<div style="display:none;"></div>';
+            }
+
+            var step1Icon, step1Text, step2Icon, step2Text, step3Icon, step3Text;
+
+            if (isIOS) {
+                step1Icon = '<svg class="w-5 h-5 text-[#f37a20]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>';
+                step1Text = 'Open this app in <b>Safari</b> browser';
+                step2Icon = '<svg class="w-5 h-5 text-[#f37a20]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15" /></svg>';
+                step2Text = 'Tap the <b>Share</b> button in the navigation bar';
+                step3Icon = '<svg class="w-5 h-5 text-[#f37a20]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+                step3Text = 'Select <b>Add to Home Screen</b>';
+            } else if (isAndroid) {
+                step1Icon = '<svg class="w-5 h-5 text-[#f37a20]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>';
+                step1Text = 'Open this app in <b>Chrome</b> browser';
+                step2Icon = '<svg class="w-5 h-5 text-[#f37a20]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" /></svg>';
+                step2Text = 'Tap the <b>⋮ Menu</b> (three dots) at the top right';
+                step3Icon = '<svg class="w-5 h-5 text-[#f37a20]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>';
+                step3Text = 'Select <b>Install App</b> or <b>Add to Home Screen</b>';
+            } else {
+                // Desktop
+                step1Icon = '<svg class="w-5 h-5 text-[#f37a20]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>';
+                step1Text = 'Open in <b>Safari</b> or <b>Chrome</b> browser';
+                step2Icon = '<svg class="w-5 h-5 text-[#f37a20]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15" /></svg>';
+                step2Text = 'Tap <b>Share</b> or <b>⋮ Menu</b> in navigation bar';
+                step3Icon = '<svg class="w-5 h-5 text-[#f37a20]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+                step3Text = 'Select <b>Add to Home Screen</b>';
+            }
+
+            return '<div class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-5 z-[60] animate-fade-in" onclick="window.distApp.dismissPwaPrompt()">' +
+                   '  <div class="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl border border-slate-100 relative animate-scale-up" onclick="event.stopPropagation()">' +
+                   '    <button onclick="window.distApp.dismissPwaPrompt()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 hover:bg-slate-200 hover:text-slate-600 transition-colors">' +
+                   '      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>' +
+                   '    </button>' +
+                   '    <div class="flex items-center gap-3.5 mb-4">' +
+                   '      <div class="w-14 h-14 rounded-2xl shadow-md flex items-center justify-center overflow-hidden bg-white border border-slate-100 shrink-0">' +
+                   '        <img src="icons/icon-192x192.png" class="w-12 h-12 object-contain" alt="Sauda Logo" />' +
+                   '      </div>' +
+                   '      <div>' +
+                   '        <h3 class="text-base font-black text-slate-900 leading-tight">Install Sauda App on your HomeScreen</h3>' +
+                   '      </div>' +
+                   '    </div>' +
+                   '    <p class="text-xs text-slate-500 leading-relaxed mb-5">This site has app functionality. Add it to your Home Screen for a better experience and easy access.</p>' +
+                   '    <div class="space-y-4">' +
+                   '      <div class="flex items-center gap-3">' +
+                   '        <div class="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">' + step1Icon + '</div>' +
+                   '        <span class="text-sm text-slate-700"><span class="text-slate-400 font-bold mr-1.5">1.</span> ' + step1Text + '</span>' +
+                   '      </div>' +
+                   '      <div class="flex items-center gap-3">' +
+                   '        <div class="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">' + step2Icon + '</div>' +
+                   '        <span class="text-sm text-slate-700"><span class="text-slate-400 font-bold mr-1.5">2.</span> ' + step2Text + '</span>' +
+                   '      </div>' +
+                   '      <div class="flex items-center gap-3">' +
+                   '        <div class="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">' + step3Icon + '</div>' +
+                   '        <span class="text-sm text-slate-700"><span class="text-slate-400 font-bold mr-1.5">3.</span> ' + step3Text + '</span>' +
+                   '      </div>' +
+                   '    </div>' +
+                   '    <button onclick="window.distApp.dismissPwaPrompt()" class="w-full mt-6 py-3 bg-gradient-to-r from-[#f37a20] to-[#fab915] text-white rounded-2xl text-sm font-bold shadow-md hover:brightness-105 active:scale-[0.98] transition-all">Got it!</button>' +
+                   '  </div>' +
+                   '</div>';
+        },
+
         submitNewSauda: function () {
             var oModel = this.getOwnerComponent().getModel();
+            
+            var distEl = document.getElementById("newSaudaDist");
+            var distName = distEl ? distEl.value : "Adithi Trading";
+            var prodEl = document.getElementById("newSaudaProd");
+            var prodName = prodEl ? prodEl.value : "SOYA BEAN OIL (1 SKU)";
+            var qtyEl = document.getElementById("newSaudaQty");
+            var qtyValue = qtyEl ? Number(qtyEl.value) : 10;
+            var dateEl = document.getElementById("newSaudaDate");
+            var dateValue = dateEl ? dateEl.value : "08-06-2026";
+
+            if (distName) {
+                var aBookings = oModel.getProperty("/bookingsList");
+                if (aBookings) {
+                    for (var i = 0; i < aBookings.length; i++) {
+                        if (aBookings[i].name === distName) {
+                            var newBooking = {
+                                id: (Math.floor(Math.random() * 90000) + 10000).toString(),
+                                date: dateValue,
+                                status: "Pending",
+                                product: prodName,
+                                qty: qtyValue
+                            };
+                            aBookings[i].bookings.unshift(newBooking);
+                            aBookings[i].expanded = true;
+                            break;
+                        }
+                    }
+                    oModel.setProperty("/bookingsList", aBookings);
+                    oModel.refresh(true);
+                }
+            }
+
             this.closeModal();
+            var oRouter = this.getOwnerComponent().getRouter();
+            oRouter.navTo("bookedsauda");
+            
             setTimeout(function() {
                 oModel.setProperty("/activeModal", {
                     title: "Booking Authenticated!",
-                    message: "Successfully booked Sauda for selected product. Pipeline code was auto-generated."
+                    message: "Successfully booked Sauda for " + distName + " product: " + prodName + " (" + qtyValue + " MT). Pipeline code was auto-generated."
                 });
             }, 400);
         },
@@ -108,10 +266,10 @@ sap.ui.define([
             if (oActiveModal.type === 'todays_rate_calc') {
                 contentHtml = '<div class="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-3 mt-2">' +
                               '  <div><label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Simulated Booking Quantity (MT)</label>' +
-                              '  <input type="number" value="15" class="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-xs text-slate-800 mt-1 focus:ring-1 focus:ring-[#f37a20] focus:outline-none" readonly /></div>' +
+                              '  <input type="number" value="15" oninput="document.getElementById(\'todaysRateTotal\').innerText = \'₹ \' + (Number(this.value) * 115200).toLocaleString(\'en-IN\', {minimumFractionDigits: 2})" class="w-full bg-white border border-slate-200 rounded px-2.5 py-1.5 text-xs text-slate-800 mt-1 focus:ring-1 focus:ring-[#f37a20] focus:outline-none" /></div>' +
                               '  <div class="pt-2 border-t border-slate-200 flex justify-between items-center text-xs">' +
                               '    <span class="font-bold text-slate-500">Calculated Value (INR):</span>' +
-                              '    <span class="font-black text-[#f37a20]">₹ 17,28,000.00</span>' +
+                              '    <span class="font-black text-[#f37a20]" id="todaysRateTotal">₹ 17,28,000.00</span>' +
                               '  </div>' +
                               '</div>';
             } else if (oActiveModal.type === 'ledger_detail') {
@@ -141,7 +299,7 @@ sap.ui.define([
                 contentHtml = '<div class="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-3 mt-2">' +
                               '  <div>' +
                               '    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Select Distributor</label>' +
-                              '    <select class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs mt-1">' +
+                              '    <select id="newSaudaDist" class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs mt-1">' +
                               '      <option value="Adithi Trading">Adithi Trading</option>' +
                               '      <option value="RAJ SALES">RAJ SALES</option>' +
                               '      <option value="AADINATH TRENDING COMPANY">AADINATH TRENDING COMPANY</option>' +
@@ -149,7 +307,7 @@ sap.ui.define([
                               '  </div>' +
                               '  <div>' +
                               '    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Product Segment</label>' +
-                              '    <select class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs mt-1">' +
+                              '    <select id="newSaudaProd" class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs mt-1">' +
                               '      <option value="SOYA BEAN OIL (1 SKU)">SOYA BEAN OIL</option>' +
                               '      <option value="MUSTARD OIL (2 SKU)">MUSTARD OIL</option>' +
                               '      <option value="FORTUNE BESAN (1 SKU)">FORTUNE BESAN</option>' +
@@ -158,13 +316,196 @@ sap.ui.define([
                               '  <div class="grid grid-cols-2 gap-2">' +
                               '    <div>' +
                               '      <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Quantity (MT)</label>' +
-                              '      <input type="number" value="10" class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs mt-1"/>' +
+                              '      <input id="newSaudaQty" type="number" value="10" class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs mt-1"/>' +
                               '    </div>' +
                               '    <div>' +
                               '      <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Booking Date</label>' +
-                              '      <input type="text" value="08-06-2026" placeholder="11-08-2022" class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs mt-1"/>' +
+                              '      <input id="newSaudaDate" type="text" value="08-06-2026" placeholder="11-08-2022" class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs mt-1"/>' +
                               '    </div>' +
                               '  </div>' +
+                              '</div>';
+            } else if (oActiveModal.type === 'expired_contracts') {
+                contentHtml = '<div class="bg-white rounded-xl border border-slate-200 mt-2 overflow-hidden">' +
+                              '  <div class="px-3 py-2 border-b border-slate-200">' +
+                              '    <input type="text" onkeyup="window.distApp.filterExpiredContracts(this.value)" placeholder="Search customer name..." class="w-full bg-transparent text-xs text-slate-800 italic focus:outline-none" />' +
+                              '  </div>' +
+                              '  <table class="w-full text-left border-collapse">' +
+                              '    <thead>' +
+                              '      <tr class="bg-slate-50 border-b border-slate-200">' +
+                              '        <th class="py-2 px-1 sm:px-3 text-[9px] sm:text-[10px] font-bold text-slate-800">Contract ID</th>' +
+                              '        <th class="py-2 px-1 sm:px-3 text-[9px] sm:text-[10px] font-bold text-slate-800">Customer</th>' +
+                              '        <th class="py-2 px-1 sm:px-3 text-[9px] sm:text-[10px] font-bold text-slate-800">Quantity</th>' +
+                              '        <th class="py-2 px-1 sm:px-3 text-[9px] sm:text-[10px] font-bold text-slate-800 text-right whitespace-nowrap">Rate</th>' +
+                              '        <th class="py-2 px-1 sm:px-3 text-[9px] sm:text-[10px] font-bold text-slate-800">Status</th>' +
+                              '      </tr>' +
+                              '    </thead>' +
+                              '    <tbody class="text-[10px] sm:text-[11px] text-slate-600">' +
+                              '      <tr class="expired-contract-row border-b border-slate-100">' +
+                              '        <td class="py-2.5 px-1 sm:px-3 font-bold text-slate-800">C-1020</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 customer-name">Vanguard Enterprises</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">10.50 MT</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 text-right whitespace-nowrap">₹ 54,200</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">Expired</td>' +
+                              '      </tr>' +
+                              '      <tr class="expired-contract-row border-b border-slate-100">' +
+                              '        <td class="py-2.5 px-1 sm:px-3 font-bold text-slate-800">C-1028</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 customer-name">Swastik Traders</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">5.64 MT</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 text-right whitespace-nowrap">₹ 54,100</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">Expired</td>' +
+                              '      </tr>' +
+                              '      <tr class="expired-contract-row border-b border-slate-100">' +
+                              '        <td class="py-2.5 px-1 sm:px-3 font-bold text-slate-800">C-1033</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 customer-name">Apex Industries</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">5.00 MT</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 text-right whitespace-nowrap">₹ 54,300</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">Expired</td>' +
+                              '      </tr>' +
+                              '    </tbody>' +
+                              '  </table>' +
+                              '</div>';
+            } else if (oActiveModal.type === 'near_expired_contracts') {
+                contentHtml = '<div class="bg-white rounded-xl border border-slate-200 mt-2 overflow-hidden">' +
+                              '  <div class="px-3 py-2 border-b border-slate-200">' +
+                              '    <input type="text" onkeyup="window.distApp.filterExpiredContracts(this.value)" placeholder="Search customer name..." class="w-full bg-transparent text-xs text-slate-800 italic focus:outline-none" />' +
+                              '  </div>' +
+                              '  <table class="w-full text-left border-collapse">' +
+                              '    <thead>' +
+                              '      <tr class="bg-slate-50 border-b border-slate-200">' +
+                              '        <th class="py-2 px-1 sm:px-3 text-[9px] sm:text-[10px] font-bold text-slate-800">Contract ID</th>' +
+                              '        <th class="py-2 px-1 sm:px-3 text-[9px] sm:text-[10px] font-bold text-slate-800">Customer</th>' +
+                              '        <th class="py-2 px-1 sm:px-3 text-[9px] sm:text-[10px] font-bold text-slate-800">Quantity</th>' +
+                              '        <th class="py-2 px-1 sm:px-3 text-[9px] sm:text-[10px] font-bold text-slate-800 text-right whitespace-nowrap">Rate</th>' +
+                              '        <th class="py-2 px-1 sm:px-3 text-[9px] sm:text-[10px] font-bold text-slate-800">Status</th>' +
+                              '      </tr>' +
+                              '    </thead>' +
+                              '    <tbody class="text-[10px] sm:text-[11px] text-slate-600">' +
+                              '      <tr class="expired-contract-row border-b border-slate-100">' +
+                              '        <td class="py-2.5 px-1 sm:px-3 font-bold text-slate-800">C-1102</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 customer-name">Krishna & Co</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">85.20 MT</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 text-right whitespace-nowrap">₹ 54,200</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">Expires in 5 days</td>' +
+                              '      </tr>' +
+                              '      <tr class="expired-contract-row border-b border-slate-100">' +
+                              '        <td class="py-2.5 px-1 sm:px-3 font-bold text-slate-800">C-1109</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 customer-name">Sai Baba Distributors</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">53.576 MT</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 text-right whitespace-nowrap">₹ 54,400</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">Expires in 8 days</td>' +
+                              '      </tr>' +
+                              '      <tr class="expired-contract-row border-b border-slate-100">' +
+                              '        <td class="py-2.5 px-1 sm:px-3 font-bold text-slate-800">C-1115</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 customer-name">Galaxy Sales Corp</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">30.00 MT</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 text-right whitespace-nowrap">₹ 54,150</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">Expires in 10 days</td>' +
+                              '      </tr>' +
+                              '    </tbody>' +
+                              '  </table>' +
+                              '</div>';
+            } else if (oActiveModal.type === 'pending_sauda') {
+                contentHtml = '<div class="bg-white rounded-xl border border-slate-200 mt-2 overflow-hidden">' +
+                              '  <div class="px-3 py-2 border-b border-slate-200">' +
+                              '    <input type="text" onkeyup="window.distApp.filterExpiredContracts(this.value)" placeholder="Search customer name..." class="w-full bg-transparent text-xs text-slate-800 italic focus:outline-none" />' +
+                              '  </div>' +
+                              '  <table class="w-full text-left border-collapse">' +
+                              '    <thead>' +
+                              '      <tr class="bg-slate-50 border-b border-slate-200">' +
+                              '        <th class="py-2 px-1 sm:px-3 text-[9px] sm:text-[10px] font-bold text-slate-800">Contract ID</th>' +
+                              '        <th class="py-2 px-1 sm:px-3 text-[9px] sm:text-[10px] font-bold text-slate-800">Customer</th>' +
+                              '        <th class="py-2 px-1 sm:px-3 text-[9px] sm:text-[10px] font-bold text-slate-800">Quantity</th>' +
+                              '        <th class="py-2 px-1 sm:px-3 text-[9px] sm:text-[10px] font-bold text-slate-800 text-right whitespace-nowrap">Rate</th>' +
+                              '        <th class="py-2 px-1 sm:px-3 text-[9px] sm:text-[10px] font-bold text-slate-800">Status</th>' +
+                              '      </tr>' +
+                              '    </thead>' +
+                              '    <tbody class="text-[10px] sm:text-[11px] text-slate-600">' +
+                              '      <tr class="expired-contract-row border-b border-slate-100">' +
+                              '        <td class="py-2.5 px-1 sm:px-3 font-bold text-slate-800">PS-701</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 customer-name">Rohan Agri Foods</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">1200.00 MT</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 text-right whitespace-nowrap">₹ 54,000</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">Pending Dispatch</td>' +
+                              '      </tr>' +
+                              '      <tr class="expired-contract-row border-b border-slate-100">' +
+                              '        <td class="py-2.5 px-1 sm:px-3 font-bold text-slate-800">PS-704</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 customer-name">Sunlight Supermarket</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">800.486 MT</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 text-right whitespace-nowrap">₹ 54,250</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">Approved</td>' +
+                              '      </tr>' +
+                              '      <tr class="expired-contract-row border-b border-slate-100">' +
+                              '        <td class="py-2.5 px-1 sm:px-3 font-bold text-slate-800">PS-709</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 customer-name">Ambika Stores</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">268.00 MT</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3 text-right whitespace-nowrap">₹ 54,300</td>' +
+                              '        <td class="py-2.5 px-1 sm:px-3">Awaiting Approval</td>' +
+                              '      </tr>' +
+                              '    </tbody>' +
+                              '  </table>' +
+                              '</div>';
+            } else if (oActiveModal.type === 'overdue_payments') {
+                contentHtml = '<div class="bg-white rounded-xl border border-slate-200 mt-2 overflow-hidden">' +
+                              '  <table class="w-full text-left border-collapse">' +
+                              '    <thead>' +
+                              '      <tr class="bg-slate-50 border-b border-slate-200">' +
+                              '        <th class="py-2 px-3 text-[10px] font-bold text-slate-800">Customer</th>' +
+                              '        <th class="py-2 px-3 text-[10px] font-bold text-slate-800 text-right">Overdue Amount</th>' +
+                              '        <th class="py-2 px-3 text-[10px] font-bold text-slate-800">Due Status</th>' +
+                              '      </tr>' +
+                              '    </thead>' +
+                              '    <tbody class="text-[11px] text-slate-600">' +
+                              '      <tr class="expired-contract-row border-b border-slate-100">' +
+                              '        <td class="py-2.5 px-3 customer-name font-bold text-slate-800">Abhishek Agri Industries</td>' +
+                              '        <td class="py-2.5 px-3 text-right text-red-600 font-semibold">₹ 45,30,500.00</td>' +
+                              '        <td class="py-2.5 px-3">Due > 30 Days</td>' +
+                              '      </tr>' +
+                              '      <tr class="expired-contract-row border-b border-slate-100">' +
+                              '        <td class="py-2.5 px-3 customer-name font-bold text-slate-800">Swastik Food Products</td>' +
+                              '        <td class="py-2.5 px-3 text-right text-orange-600 font-semibold">₹ 30,12,087.08</td>' +
+                              '        <td class="py-2.5 px-3">Due > 15 Days</td>' +
+                              '      </tr>' +
+                              '      <tr class="expired-contract-row border-b border-slate-100">' +
+                              '        <td class="py-2.5 px-3 customer-name font-bold text-slate-800">Apex Grain Merchants</td>' +
+                              '        <td class="py-2.5 px-3 text-right text-amber-600 font-semibold">₹ 20,82,500.00</td>' +
+                              '        <td class="py-2.5 px-3">Due > 7 Days</td>' +
+                              '      </tr>' +
+                              '    </tbody>' +
+                              '    <tfoot>' +
+                              '      <tr class="bg-slate-50 border-t-2 border-slate-200">' +
+                              '        <td class="py-3 px-3 font-black text-slate-900 text-[12px]">Total Overdue Balance</td>' +
+                              '        <td class="py-3 px-3 text-right font-black text-red-600 text-[12px]">₹ 96,25,087.08</td>' +
+                              '        <td></td>' +
+                              '      </tr>' +
+                              '    </tfoot>' +
+                              '  </table>' +
+                              '</div>';
+            } else if (oActiveModal.type === 'tomorrow_due') {
+                contentHtml = '<div class="bg-white rounded-xl border border-slate-200 mt-2 overflow-hidden">' +
+                              '  <table class="w-full text-left border-collapse">' +
+                              '    <thead>' +
+                              '      <tr class="bg-slate-50 border-b border-slate-200">' +
+                              '        <th class="py-2 px-3 text-[10px] font-bold text-slate-800">Customer</th>' +
+                              '        <th class="py-2 px-3 text-[10px] font-bold text-slate-800 text-right">Incoming Amount</th>' +
+                              '      </tr>' +
+                              '    </thead>' +
+                              '    <tbody class="text-[11px] text-slate-600">' +
+                              '      <tr class="expired-contract-row border-b border-slate-100">' +
+                              '        <td class="py-2.5 px-3 customer-name font-bold text-slate-800">Galaxy Retail Corporation</td>' +
+                              '        <td class="py-2.5 px-3 text-right text-green-600 font-semibold">₹ 92,60,561.00</td>' +
+                              '      </tr>' +
+                              '      <tr class="expired-contract-row border-b border-slate-100">' +
+                              '        <td class="py-2.5 px-3 customer-name font-bold text-slate-800">Sai Agro Foods</td>' +
+                              '        <td class="py-2.5 px-3 text-right text-green-600 font-semibold">₹ 60,00,000.00</td>' +
+                              '      </tr>' +
+                              '    </tbody>' +
+                              '    <tfoot>' +
+                              '      <tr class="bg-slate-50 border-t-2 border-slate-200">' +
+                              '        <td class="py-3 px-3 font-black text-slate-900 text-[12px]">Total Incoming Dues</td>' +
+                              '        <td class="py-3 px-3 text-right font-black text-green-600 text-[12px]">₹ 1,52,60,561.00</td>' +
+                              '      </tr>' +
+                              '    </tfoot>' +
+                              '  </table>' +
                               '</div>';
             }
 
@@ -173,8 +514,10 @@ sap.ui.define([
                 buttonsHtml = '<button onclick="window.distApp.submitNewSauda()" class="flex-1 py-2.5 bg-gradient-to-r from-[#f37a20] to-[#fab915] text-white rounded-xl text-xs font-bold shadow-md hover:brightness-105 active:scale-95 transition-all">Confirm & Submit</button>';
             }
 
+            var modalWidthClass = (oActiveModal.type === 'expired_contracts' || oActiveModal.type === 'near_expired_contracts' || oActiveModal.type === 'pending_sauda' || oActiveModal.type === 'overdue_payments' || oActiveModal.type === 'tomorrow_due') ? 'max-w-xl' : 'max-w-sm';
+
             return '<div class="fixed inset-0 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">' +
-                   '  <div class="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl border border-slate-100 relative animate-scale-up">' +
+                   '  <div class="bg-white rounded-3xl w-full ' + modalWidthClass + ' p-6 shadow-2xl border border-slate-100 relative animate-scale-up">' +
                    '    <div class="flex items-center gap-3 mb-4">' +
                    '      <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-[#f37a20]">' +
                    '        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">' +

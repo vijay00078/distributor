@@ -26,21 +26,28 @@
 
             <!-- Target and Achievement Progress Panel -->
             <html:div class="bg-white rounded-2xl p-4 shadow-xs border border-slate-100 relative overflow-hidden">
-              <html:div class="flex justify-between items-start mb-3">
-                <html:div>
-                  <html:div class="flex items-center gap-1.5">
-                    <html:span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Overall </html:span>
-                    <Text text="{/selectedSaudaSalesTab}" class="text-xs font-bold text-slate-500 uppercase tracking-wider" />
-                    <Text text="{= ${/selectedDistributor} === 'All Distributor' ? '(Total)' : '(Unit)'}" class="text-xs text-slate-400 font-medium ml-1" />
+              <html:div class="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-3 sm:gap-0 mb-3">
+                <html:div class="w-full sm:w-auto flex flex-row sm:flex-col justify-between sm:justify-start items-center sm:items-start">
+                  <html:div>
+                    <html:div class="flex items-center gap-1.5">
+                      <html:span class="text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">Overall </html:span>
+                      <Text text="{/selectedSaudaSalesTab}" class="text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider" />
+                      <Text text="{= ${/selectedDistributor} === 'All Distributor' ? '(Total)' : '(Unit)'}" class="text-[11px] sm:text-xs text-slate-400 font-medium ml-1" />
+                    </html:div>
+                    <html:div class="flex flex-wrap items-baseline gap-1.5 sm:gap-2 mt-0.5 sm:mt-1">
+                      <Text text="{/activeSaudaMetrics/achievement} {= ${/selectedSaudaSalesTab} === 'Sauda' ? 'MT' : 'L'}" class="text-base sm:text-lg font-black text-[#f37a20]" />
+                      <Text text="/ {/activeSaudaMetrics/target} {= ${/selectedSaudaSalesTab} === 'Sauda' ? 'MT' : 'L'} Target" class="text-[10px] sm:text-xs text-slate-500 font-bold sm:ml-1" />
+                    </html:div>
                   </html:div>
-                  <html:div class="flex items-baseline gap-2 mt-1">
-                    <Text text="{/activeSaudaMetrics/achievement} {= ${/selectedSaudaSalesTab} === 'Sauda' ? 'MT' : 'L'}" class="text-lg font-black text-[#f37a20]" />
-                    <Text text="/ {/activeSaudaMetrics/target} {= ${/selectedSaudaSalesTab} === 'Sauda' ? 'MT' : 'L'} Target" class="text-xs text-slate-500 font-bold ml-1" />
+
+                  <!-- MTD / QTD / YTD Filters (Moved to right on mobile inline with text) -->
+                  <html:div class="flex sm:hidden bg-slate-100 p-0.5 rounded-lg border border-slate-200 shrink-0">
+                      <core:HTML sanitizeContent="false" xmlns:core="sap.ui.core" content="{path: '/selectedTimeframe', formatter: '.formatTimeframeFilters'}" />
                   </html:div>
                 </html:div>
 
-                <!-- MTD / QTD / YTD Filters -->
-                <html:div class="flex bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+                <!-- MTD / QTD / YTD Filters (Desktop) -->
+                <html:div class="hidden sm:flex bg-slate-100 p-0.5 rounded-lg border border-slate-200 shrink-0">
                     <core:HTML sanitizeContent="false" xmlns:core="sap.ui.core" content="{path: '/selectedTimeframe', formatter: '.formatTimeframeFilters'}" />
                 </html:div>
               </html:div>
@@ -86,83 +93,83 @@
                 <html:span class="text-[10px] text-slate-400 font-bold">Real-time stats</html:span>
               </html:div>
 
-              <html:div class="grid grid-cols-2 gap-3">
+              <html:div class="grid grid-cols-2 gap-2 sm:gap-3">
                 
-                <html:div class="bg-[#eb3330] rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] p-3.5 text-white shadow-sm flex flex-col justify-between h-24 hover:scale-[1.02] transition-transform cursor-pointer">
-                  <html:div class="flex justify-between items-start">
-                    <Text text="{/activeSaudaMetrics/expired}" class="text-[14px] font-bold tracking-wide text-white" />
-                    <html:div class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center">
+                <html:div onclick="window.homeApp.openExpiredContracts()" class="bg-[#eb3330] rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] p-2.5 sm:p-3.5 text-white shadow-sm flex flex-col justify-between h-24 hover:scale-[1.02] transition-transform cursor-pointer overflow-hidden min-w-0">
+                  <html:div class="flex justify-between items-start gap-1.5">
+                    <Text text="{/activeSaudaMetrics/expired}" class="text-[13px] sm:text-[14px] font-bold tracking-wide text-white truncate" wrapping="false" />
+                    <html:div class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center shrink-0">
                       <html:svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <html:path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                       </html:svg>
                     </html:div>
                   </html:div>
                   <html:div>
-                    <html:span class="text-[10px] font-medium opacity-90 block">Expired</html:span>
+                    <html:span class="text-[9px] sm:text-[10px] font-medium opacity-90 block truncate" title="Expired">Expired</html:span>
                   </html:div>
                 </html:div>
 
-                <html:div class="bg-[#f49326] rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] p-3.5 text-white shadow-sm flex flex-col justify-between h-24 hover:scale-[1.02] transition-transform cursor-pointer">
-                  <html:div class="flex justify-between items-start">
-                    <Text text="{/activeSaudaMetrics/nearExpired}" class="text-[14px] font-bold tracking-wide text-white" />
-                    <html:div class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center">
+                <html:div onclick="window.homeApp.openNearExpiredContracts()" class="bg-[#f49326] rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] p-2.5 sm:p-3.5 text-white shadow-sm flex flex-col justify-between h-24 hover:scale-[1.02] transition-transform cursor-pointer overflow-hidden min-w-0">
+                  <html:div class="flex justify-between items-start gap-1.5">
+                    <Text text="{/activeSaudaMetrics/nearExpired}" class="text-[13px] sm:text-[14px] font-bold tracking-wide text-white truncate" wrapping="false" />
+                    <html:div class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center shrink-0">
                       <html:svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24">
                         <html:path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </html:svg>
                     </html:div>
                   </html:div>
                   <html:div>
-                    <html:span class="text-[10px] font-medium opacity-90 block">Near Expired</html:span>
+                    <html:span class="text-[9px] sm:text-[10px] font-medium opacity-90 block truncate" title="Near Expired">Near Expired</html:span>
                   </html:div>
                 </html:div>
 
-                <html:div onclick="window.homeApp.openTodayRateCalculator()" class="bg-[#0598d1] rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] p-3.5 text-white shadow-sm flex flex-col justify-between h-24 hover:scale-[1.02] transition-transform cursor-pointer">
-                  <html:div class="flex justify-between items-start">
-                    <html:span class="text-[14px] font-bold tracking-wide">Today's Rate</html:span>
-                    <html:div class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center font-bold text-sm text-white">
+                <html:div onclick="window.homeApp.openTodayRateCalculator()" class="bg-[#0598d1] rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] p-2.5 sm:p-3.5 text-white shadow-sm flex flex-col justify-between h-24 hover:scale-[1.02] transition-transform cursor-pointer overflow-hidden min-w-0">
+                  <html:div class="flex justify-between items-start gap-1.5">
+                    <html:span class="text-[13px] sm:text-[14px] font-bold tracking-wide truncate">Today's Rate</html:span>
+                    <html:div class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center font-bold text-sm text-white shrink-0">
                       ₹
                     </html:div>
                   </html:div>
                   <html:div>
-                    <Text text="{/activeSaudaMetrics/todaysRate}" class="text-[10px] font-medium opacity-90 block text-white" />
+                    <Text text="{/activeSaudaMetrics/todaysRate}" class="text-[9px] sm:text-[10px] font-medium opacity-90 block text-white truncate" wrapping="false" />
                   </html:div>
                 </html:div>
 
-                <html:div class="bg-[#e7a726] rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] p-3.5 text-white shadow-sm flex flex-col justify-between h-24 hover:scale-[1.02] transition-transform cursor-pointer">
-                  <html:div class="flex justify-between items-start">
-                    <Text text="{/activeSaudaMetrics/pendingSauda}" class="text-[14px] font-bold tracking-wide text-white" />
-                    <html:div class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center">
+                <html:div onclick="window.homeApp.openPendingSauda()" class="bg-[#e7a726] rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] p-2.5 sm:p-3.5 text-white shadow-sm flex flex-col justify-between h-24 hover:scale-[1.02] transition-transform cursor-pointer overflow-hidden min-w-0">
+                  <html:div class="flex justify-between items-start gap-1.5">
+                    <Text text="{/activeSaudaMetrics/pendingSauda}" class="text-[13px] sm:text-[14px] font-bold tracking-wide text-white truncate" wrapping="false" />
+                    <html:div class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center shrink-0">
                       <html:svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24">
                         <html:path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </html:svg>
                     </html:div>
                   </html:div>
                   <html:div>
-                    <html:span class="text-[10px] font-medium opacity-90 block">Pending Sauda</html:span>
+                    <html:span class="text-[9px] sm:text-[10px] font-medium opacity-90 block truncate" title="Pending Sauda">Pending Sauda</html:span>
                   </html:div>
                 </html:div>
 
-                <html:div class="bg-[#eb3330] rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] p-3.5 text-white shadow-sm flex flex-col justify-between h-24 hover:scale-[1.02] transition-transform cursor-pointer">
-                  <html:div class="flex justify-between items-start">
-                    <html:span class="text-[10px] font-medium opacity-90 block">Over Due</html:span>
-                    <html:div class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center font-bold text-xs text-white">
+                <html:div onclick="window.homeApp.openOverduePayments()" class="bg-[#eb3330] rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] p-2.5 sm:p-3.5 text-white shadow-sm flex flex-col justify-between h-24 hover:scale-[1.02] transition-transform cursor-pointer overflow-hidden min-w-0">
+                  <html:div class="flex justify-between items-start gap-1.5">
+                    <html:span class="text-[9px] sm:text-[10px] font-medium opacity-90 block truncate" title="Over Due">Over Due</html:span>
+                    <html:div class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center font-bold text-xs text-white shrink-0">
                       ₹
                     </html:div>
                   </html:div>
                   <html:div>
-                    <Text text="{/activeSaudaMetrics/overDue}" class="text-[13px] font-black tracking-tight text-white block" />
+                    <Text text="{/activeSaudaMetrics/overDue}" class="text-[12px] sm:text-[13px] font-black tracking-tight text-white block truncate" wrapping="false" />
                   </html:div>
                 </html:div>
 
-                <html:div class="bg-[#f49326] rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] p-3.5 text-white shadow-sm flex flex-col justify-between h-24 hover:scale-[1.02] transition-transform cursor-pointer">
-                  <html:div class="flex justify-between items-start">
-                    <html:span class="text-[10px] font-medium opacity-90 block">Tomorrow Due</html:span>
-                    <html:div class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center font-bold text-xs text-white">
+                <html:div onclick="window.homeApp.openTomorrowDue()" class="bg-[#f49326] rounded-tl-[28px] rounded-br-[28px] rounded-tr-[4px] rounded-bl-[4px] p-2.5 sm:p-3.5 text-white shadow-sm flex flex-col justify-between h-24 hover:scale-[1.02] transition-transform cursor-pointer overflow-hidden min-w-0">
+                  <html:div class="flex justify-between items-start gap-1.5">
+                    <html:span class="text-[9px] sm:text-[10px] font-medium opacity-90 block truncate" title="Tomorrow Due">Tomorrow Due</html:span>
+                    <html:div class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center font-bold text-xs text-white shrink-0">
                       ₹
                     </html:div>
                   </html:div>
                   <html:div>
-                    <Text text="{/activeSaudaMetrics/tomorrowDue}" class="text-[13px] font-black tracking-tight text-white block" />
+                    <Text text="{/activeSaudaMetrics/tomorrowDue}" class="text-[12px] sm:text-[13px] font-black tracking-tight text-white block truncate" wrapping="false" />
                   </html:div>
                 </html:div>
 

@@ -4,6 +4,10 @@ specVersion: "4.0"
 metadata:
   name: distributor-app
 type: application
+builder:
+  componentPreload:
+    excludes:
+      - "distributor/sw.js"
 server:
   customMiddleware:
     - name: fiori-tools-proxy

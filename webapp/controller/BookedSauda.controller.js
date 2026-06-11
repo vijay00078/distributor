@@ -58,11 +58,16 @@ sap.ui.define([
                 if (dist.expanded) {
                     html += '  <div class="bg-slate-50 px-4 py-3 border-t border-slate-100 space-y-3 divide-y divide-slate-200">';
                     dist.bookings.forEach(function(booking) {
+                        var statusBgClass = booking.status === 'Approved' ? 'bg-[#eef7ec] text-[#0e984a] border-emerald-100' : (booking.status === 'Pending' ? 'bg-[#fff5e6] text-[#f49326] border-orange-100' : 'bg-[#feecee] text-[#eb3330] border-red-100');
+                        var statusDotClass = booking.status === 'Approved' ? 'bg-emerald-500' : (booking.status === 'Pending' ? 'bg-[#f49326]' : 'bg-[#eb3330]');
+                        var statusIcon = booking.status === 'Approved' ? '✔ ' : (booking.status === 'Pending' ? '⌛ ' : '✖ ');
+
                         html += '    <div class="pt-3 first:pt-0">';
                         html += '      <div class="flex justify-between items-center mb-1">';
                         html += '        <span class="text-xs font-bold text-slate-900 flex items-center gap-1.5"><span class="text-[#f37a20]">#</span>' + booking.id + '</span>';
-                        html += '        <span class="bg-[#eef7ec] text-[#0e984a] text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 border border-emerald-100">';
-                        html += '          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>✔ ' + booking.status;
+                        
+                        html += '        <span class="' + statusBgClass + ' text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 border">';
+                        html += '          <span class="w-1.5 h-1.5 rounded-full ' + statusDotClass + '"></span>' + statusIcon + booking.status;
                         html += '        </span>';
                         html += '      </div>';
                         html += '      <div class="flex justify-between items-center">';
@@ -70,7 +75,8 @@ sap.ui.define([
                         html += '          <svg class="w-3.5 h-3.5 text-[#fab915]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>';
                         html += '          ' + booking.date;
                         html += '        </span>';
-                        html += '        <span class="text-[10px] bg-white border border-slate-200 rounded px-2 py-1 font-bold text-slate-700 tracking-wide uppercase shadow-2xs">' + booking.product + '</span>';
+                        var qtyText = booking.qty ? booking.qty + ' MT ' : '';
+                        html += '        <span class="text-[10px] bg-white border border-slate-200 rounded px-2 py-1 font-bold text-slate-700 tracking-wide shadow-2xs">' + qtyText + booking.product + '</span>';
                         html += '      </div>';
                         html += '    </div>';
                     });
